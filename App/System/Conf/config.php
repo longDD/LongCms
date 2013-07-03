@@ -1,8 +1,9 @@
 <?php
 
-$conf = array(
+$current_conf = array(
         //'配置项'=>'配置值'
 );
 
-$comConf = include APP_COMMON . 'config.php';
-return array_merge($conf, $comConf);
+$common_conf = include(APP_COMMON . 'config.php');
+
+return array_merge($current_conf, $common_conf);

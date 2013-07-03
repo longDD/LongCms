@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
 // +----------------------------------------------------------------------
@@ -17,12 +18,13 @@
  * @author liu21st <liu21st@gmail.com>
  */
 class View {
+
     /**
      * 模板输出变量
      * @var tVar
      * @access protected
-     */       
-    protected $tVar        =  array();
+     */
+    protected $tVar = array();
 
     /**
      * 模板变量赋值
@@ -30,10 +32,10 @@ class View {
      * @param mixed $name
      * @param mixed $value
      */
-    public function assign($name,$value=''){
-        if(is_array($name)) {
-            $this->tVar   =  array_merge($this->tVar,$name);
-        }else {
+    public function assign($name, $value = '') {
+        if (is_array($name)) {
+            $this->tVar = array_merge($this->tVar, $name);
+        } else {
             $this->tVar[$name] = $value;
         }
     }
@@ -44,11 +46,11 @@ class View {
      * @param string $name
      * @return mixed
      */
-    public function get($name=''){
-        if('' === $name) {
+    public function get($name = '') {
+        if ('' === $name) {
             return $this->tVar;
         }
-        return isset($this->tVar[$name])?$this->tVar[$name]:false;
+        return isset($this->tVar[$name]) ? $this->tVar[$name] : false;
     }
 
     /**
@@ -61,14 +63,14 @@ class View {
      * @param string $prefix 模板缓存前缀
      * @return mixed
      */
-    public function display($templateFile='',$charset='',$contentType='',$content='',$prefix='') {
+    public function display($templateFile = '', $charset = '', $contentType = '', $content = '', $prefix = '') {
         G('viewStartTime');
         // 视图开始标签
-        tag('view_begin',$templateFile);
+        tag('view_begin', $templateFile);
         // 解析并获取模板内容
-        $content = $this->fetch($templateFile,$content,$prefix);
+        $content = $this->fetch($templateFile, $content, $prefix);
         // 输出模板内容
-        $this->render($content,$charset,$contentType);
+        $this->render($content, $charset, $contentType);
         // 视图结束标签
         tag('view_end');
     }
@@ -81,12 +83,14 @@ class View {
      * @param string $contentType 输出类型
      * @return mixed
      */
-    private function render($content,$charset='',$contentType=''){
-        if(empty($charset))  $charset = C('DEFAULT_CHARSET');
-        if(empty($contentType)) $contentType = C('TMPL_CONTENT_TYPE');
+    private function render($content, $charset = '', $contentType = '') {
+        if (empty($charset))
+            $charset = C('DEFAULT_CHARSET');
+        if (empty($contentType))
+            $contentType = C('TMPL_CONTENT_TYPE');
         // 网页字符编码
-        header('Content-Type:'.$contentType.'; charset='.$charset);
-        header('Cache-control: '.C('HTTP_CACHE_CONTROL'));  // 页面缓存控制
+        header('Content-Type:' . $contentType . '; charset=' . $charset);
+        header('Cache-control: ' . C('HTTP_CACHE_CONTROL'));  // 页面缓存控制
         header('X-Powered-By:ThinkPHP');
         // 输出模板文件
         echo $content;
@@ -100,31 +104,33 @@ class View {
      * @param string $prefix 模板缓存前缀
      * @return string
      */
-    public function fetch($templateFile='',$content='',$prefix='') {
-        if(empty($content)) {
+    public function fetch($templateFile = '', $content = '', $prefix = '') {
+        if (empty($content)) {
             // 模板文件解析标签
-            tag('view_template',$templateFile);
+            tag('view_template', $templateFile);
             // 模板文件不存在直接返回
-            if(!is_file($templateFile)) return NULL;
+            if (!is_file($templateFile))
+                return NULL;
         }
         // 页面缓存
         ob_start();
         ob_implicit_flush(0);
-        if('php' == strtolower(C('TMPL_ENGINE_TYPE'))) { // 使用PHP原生模板
+        if ('php' == strtolower(C('TMPL_ENGINE_TYPE'))) { // 使用PHP原生模板
             // 模板阵列变量分解成为独立变量
             extract($this->tVar, EXTR_OVERWRITE);
             // 直接载入PHP模板
-            empty($content)?include $templateFile:eval('?>'.$content);
-        }else{
+            empty($content) ? include $templateFile : eval('?>' . $content);
+        } else {
             // 视图解析标签
-            $params = array('var'=>$this->tVar,'file'=>$templateFile,'content'=>$content,'prefix'=>$prefix);
-            tag('view_parse',$params);
+            $params = array('var' => $this->tVar, 'file' => $templateFile, 'content' => $content, 'prefix' => $prefix);
+            tag('view_parse', $params);
         }
         // 获取并清空缓存
         $content = ob_get_clean();
         // 内容过滤标签
-        tag('view_filter',$content);
+        tag('view_filter', $content);
         // 输出模板文件
         return $content;
     }
+
 }

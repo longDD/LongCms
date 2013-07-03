@@ -1,11 +1,15 @@
-<!-- longdd 2013.4.25 后台首页-->
-<!DOCTYPE html>
-<html>
-    <head>
-        <title></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
-</html>
+<!-- longdd 2013.6.18 后台首页-->
+<layout name="Common/layout"/>
+<div class="Item hr">
+    <div class="current">系统信息</div>
+</div>
+<div>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+        <volist name="server_info" id="vo" key="k">
+            <php> if($k%2==1) echo "<tr>";</php>
+            <td width="120" align="right">{$key}：</td>
+            <td>{$vo}</td>
+            <php> if($k%2==0) echo "</tr>";</php>
+        </volist>
+    </table>
+</div>

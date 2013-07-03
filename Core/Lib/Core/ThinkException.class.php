@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
 // +----------------------------------------------------------------------
@@ -17,4 +18,5 @@
  * @author    liu21st <liu21st@gmail.com>
  */
 class ThinkException extends Exception {
+    
 }
