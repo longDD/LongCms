@@ -1,0 +1,168 @@
+<!-- longdd 2013.6.18 后台用户管理-->
+<layout name="Common/layout"/>
+<div>
+    <div class="Item hr">
+        <div class="current">管理员列表</div>
+        <div id='inside_menu'>
+            <ul>
+                <li><a id='add_user_btn' href='javascript:;'>添加管理员</a></li>
+            </ul>
+        </div>
+    </div>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab" id="user_table">
+        <thead>
+            <tr>
+                <td>AID</td>
+                <td>账号</td>
+                <td>状态</td>
+                <td>备注</td>
+                <td>创建时间</td>
+                <td width="150">操作</td>
+            </tr>
+        </thead>
+        <volist name="list" id="vo">
+            <tr align="center">
+                <td>{$vo.id}</td>
+                <td>{$vo.account}</td>
+                <td><if condition="$vo['status']"><font style='color:green;'>可用</font><else/><font style='color:red;'>禁用</font></if></td>
+            <td>{$vo.remark}</td>
+            <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+            <td>
+            <if condition="$vo.email eq C('ADMIN_AUTH_KEY')">
+                --
+                <else/>
+                [ <a class='user_edit' href="{:U('Access/userEdit?id='.$vo['id'])}">编辑</a> ]
+                [ <a class='user_del' href="{:U('Access/userDel?id='.$vo['id'])}">删除</a> ]
+            </if>
+            </td>
+            </tr>
+        </volist>
+    </table>
+    <div id="page">{$page}</div>
+    <!-- Add -->
+    <div id='Add_user' style='display: none;'>
+        <form id='Add_user_form' action="" method="post">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                <tr>
+                    <th width="120">用户名：</th>
+                    <td><input type="text" name="username" class="input"/></td>
+                </tr>
+                <tr>
+                    <th>密码：</th>
+                    <td><input class="input" name="pwd" type="password" size="40" value="" /></td>
+                </tr>
+                <tr>
+                    <th>重复密码：</th>
+                    <td><input class="input" name="pwd_r" type="password" size="40" value="" /></td>
+                </tr>
+                <tr>
+                    <th>邮箱：</th>
+                    <td><input class="input" name="email" type="text" size="40" value="" /></td>
+                </tr>
+                <tr>
+                    <th>状态：</th>
+                    <td>
+                        <select name="status" style="width: 80px;">
+                            <option value="1">启用</option>
+                            <option value="0">禁用</option>
+                        </select>
+                        如果禁用了将无法登陆本系统</td>
+                </tr>
+                <tr>
+                    <th>所属用户组</th>
+                    <td>
+                        <select name="role_id" style="min-width: 80px;">
+                            {$trees}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>备注：</th>
+                    <td>
+                        <textarea name="remark" rows="5" cols="57"></textarea>
+                    </td>
+                </tr>
+            </table>
+            <input type="hidden" name="aid" value="{$info.aid}"/>
+            <button class="btn submit" type='submit'>提交</button>
+            <button class="btn submit xubox_close" type='button'>取消</button>
+        </form>
+    </div>
+    <script>
+        $(function() {
+            //增加用户弹出窗
+            $('#add_user_btn').on('click', function() {
+                var i = $.layer({
+                    type: 1,
+                    title: '添加用户',
+                    closeBtn: [0, true],
+                    border: [5, 0.5, '#666', true],
+                    shade: [0.8, '#000', true],
+                    offset: ['150px', '50%'],
+                    move: ['.xubox_title', true],
+                    area: ['620px', 'auto'],
+                    page: {
+                        html: $('#Add_user').html()
+                    },
+                    success: function() {
+                        $('form').on('submit', function() {
+                            if ($("input[name='username']").val() == '') {
+                                layer.alert('账号不能为空！', 0);
+                            } else if ($("input[name='pwd']").val() == '') {
+                                layer.alert('密码不能为空！', 0);
+                            } else if ($("input[name='pwd']").val() != $("input[name='pwd_r']").val()) {
+                                layer.alert('两次密码输入不一致！', 0);
+                            } else if ($("input[name='email']").val() == '') {
+                                layer.alert('邮箱不能为空！', 0);
+                            } else {
+                                $.ajax({
+                                    type: "post",
+                                    url: "__URL__/userAdd",
+                                    data: 'username=' + $("input[name='username']").val() + '&password=' + $("input[name='pwd']").val() + '&email=' + $("input[name='email']").val() + '&status=' + $("select[name='status']").val() + '&remark=' + $("textarea[name='remark']").val() + '&role_id=' + $("select[name='role_id']").val(),
+                                    success: function(msg) {
+                                        $('#Add_user').html($('#xuboxPageHtml').html());
+                                        layer.alert(msg, 0);
+                                        layer.close(i);
+                                    }
+                                });
+                            }
+                            return false;
+                        });
+                    },
+                    close: function(i) {
+                        $('#Add_user').html($('#xuboxPageHtml').html());
+                        layer.close(i);
+                    }
+                });
+                $('#Add_user').html(' ');
+            });
+            //编辑用户弹窗
+            $('.user_edit').each(function() {
+                $(this).on('click', function() {
+                    alert($(this).attr('href'));
+                    return false;
+                });
+            });
+            //删除用户弹窗
+            $('.user_del').each(function() {
+                $(this).on('click', function() {
+                    var url = $(this).attr("href");
+                    $.layer({
+                        shade: [0.8, '#000', true],
+                        area: ['300px', '200px'],
+                        dialog: {
+                            msg: '确认删除？',
+                            btns: 2,
+                            type: 4,
+                            btn: ['删除', '取消'],
+                            yes: function() {
+                                window.location = url;
+                            }
+                        }
+                    });
+                    return false;
+                });
+            });
+        });
+    </script>
+</div>

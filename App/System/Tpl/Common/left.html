@@ -1,0 +1,13 @@
+<!-- longdd 2013.6.18 后台左侧-->
+<div id="Left">
+    <div id="control" class=""></div>
+    <div class="subMenuList">
+        <div class="itemTitle">菜单</div>
+        <ul>
+            <foreach name="Smenu" item="v">
+                <li><a href="{:U($v['model'].'/'.$v['action'])}">{$v.name}</a></li>
+            </foreach>
+        </ul>
+    </div>
+</div>
+
