@@ -97,13 +97,11 @@ class BaseAction extends Action {
     }
 
 //通用树
-    public function baseTree($model, $fields = '*', $style = null) {
+    public function baseTree($model, $fields = '*') {
         $model = M($model);
         $list = $model->field($fields)->where('status=1')->select();
         import('ORG.Util.Tree');
         $Tree = new Tree($list);
-        if (!empty($style))
-            $Tree->style = $style;
         $trees = $Tree->get_tree();
         $this->assign('trees', $trees);
     }
@@ -128,6 +126,17 @@ class BaseAction extends Action {
     }
 
 //通用删除
+    public function baseDel($model,$map,$isAlert = 1){
+        $model = M($model);
+        $rst = $model->where($map)->delete();
+        if($isAlert == 1){
+            if($rst){
+                $this->success('删除成功');
+            }else{
+                $this->error('删除失败');
+            }
+        }
+    }
 //通用修改
 }
 

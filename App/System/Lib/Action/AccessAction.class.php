@@ -28,9 +28,9 @@ class AccessAction extends BaseAction {
         $data['verify'] = 0;
         $data['create_time'] = time();
         //添加用户，角色关联
-        $data2['role_id'] = $_POST['role_id'];
-        $data2['user_id'] = $_SESSION[C('USER_AUTH_KEY')];
         $id = $this->baseAdd('user', $data);
+        $data2['role_id'] = $_POST['role_id'];
+        $data2['user_id'] = $id;
         if ($id && $this->baseAdd('role_user', $data2)) {
             $rst = '添加成功';
         } else {
@@ -38,6 +38,17 @@ class AccessAction extends BaseAction {
         }
         //id,account,email,status,remark,create_time
         $this->ajaxReturn($rst, 'JSON');
+    }
+
+    //删除用户
+    public function userDel() {
+        $id = (int)$_GET['id'];
+        //删除用户
+        $map['id'] = $id;
+        $this->baseDel('user',$map,0);
+        //删除用户关联
+        $map2['user_id'] = $id;
+        $this->baseDel('role_user',$map2);
     }
 
     //后台目录管理
