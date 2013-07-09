@@ -189,6 +189,7 @@
                                         $('#Add_user').html($('#xuboxPageHtml').html());
                                         layer.alert(msg, 0);
                                         layer.close(i);
+                                        window.location.reload();
                                     }
                                 });
                             }

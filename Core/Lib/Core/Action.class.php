@@ -399,7 +399,7 @@ abstract class Action {
                 $this->assign('waitSecond', '3');
             // 默认发生错误的话自动返回上页
             if (!isset($this->jumpUrl))
-                $this->assign('jumpUrl', "javascript:window.history.back();");
+                $this->assign('jumpUrl', "javascript:window.history.back();document.write('<script>window.location.reload();</script>')");
             $this->display(C('TMPL_ACTION_ERROR'));
             // 中止执行  避免出错后继续执行
             exit;
