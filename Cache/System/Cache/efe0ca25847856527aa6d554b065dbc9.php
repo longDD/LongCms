@@ -104,12 +104,8 @@
                 <td>
                     <?php if($vo["email"] == C('ADMIN_AUTH_KEY')): ?>--
                         <?php else: ?>
-                        [
-                        <a class='user_edit' href="<?php echo U('Access/userEdit?id='.$vo['id']);?>">编辑</a>
-                        ]
-                [
-                        <a class='user_del' href="<?php echo U('Access/userDel?id='.$vo['id']);?>">删除</a>
-                        ]<?php endif; ?>
+                        [<a class='user_edit' href="<?php echo U('Access/userEdit?id='.$vo['id']);?>">编辑</a>]
+                        [<a class='user_del' href="<?php echo U('Access/userDel?id='.$vo['id']);?>">删除</a>]<?php endif; ?>
                 </td>
             </tr><?php endforeach; endif; else: echo "" ;endif; ?>
     </table>
@@ -235,12 +231,12 @@
                         title : '编辑',
                         area: ['620px', '450px'],
                         //层加载成功后进行的回调
-                        success : function(){ 
+                        // success : function(){ 
 
-                        },
-                        end : function(){
+                        // },
+                        // end : function(){
 
-                        }
+                        // }
                     });
                     return false;
                 });

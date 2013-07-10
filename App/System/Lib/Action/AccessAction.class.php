@@ -53,6 +53,27 @@ class AccessAction extends BaseAction {
     //编辑用户
     public function userEdit(){
         if(IS_POST){
+            if(!empty($_POST['password'])){
+                $data['password'] = myMd5($_POST['password']);
+            }
+            $data['email'] = $_POST['email'];
+            $data['status'] = $_POST['status'];
+            $data['remark'] = $_POST['remark'];
+            $data['verify'] = 0;
+            $data['update_time'] = time();
+            //修改用户
+            $model = M('user');
+            $rst = $model->where('id='.$_POST['id'])->save($data);
+            //角色关联
+            $dataT['role_id'] = $_POST['role_id'];
+            $modelT = M('role_user');
+            $rstT = $modelT->where('user_id='.$_POST['id'])->save($dataT);
+
+            if ($rst || $rstT) {
+                $this->success('修改成功');
+            } else {
+                $this->error('修改失败');
+            }
 
         }else{
         //调取用户数据

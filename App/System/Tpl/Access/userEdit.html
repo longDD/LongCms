@@ -13,21 +13,18 @@
                 <tr>
                     <th width="120">用户名：</th>
                     <td>
-                        <input type="text" name="username" class="input" value="{$info.account}"/>
+                        <input type="hidden" name="id" value="{$info.id}"/>
+                        {$info.account}
                     </td>
                 </tr>
-                <tr>
-                    <th>密码：</th>
-                    <td>
-                        <input class="input" name="pwd" type="password" size="40" value="" />
-                    </td>
-                </tr>
-                <tr>
-                    <th>重复密码：</th>
-                    <td>
-                        <input class="input" name="pwd_r" type="password" size="40" value="" />
-                    </td>
-                </tr>
+                <if condition="!empty($_SESSION[C('ADMIN_AUTH_KEY')])">
+                    <tr>
+                        <th>密码：</th>
+                        <td>
+                            <input class="input" name="password" type="password" size="40" value="" />
+                        </td>
+                    </tr>
+                </if>
                 <tr>
                     <th>邮箱：</th>
                     <td>

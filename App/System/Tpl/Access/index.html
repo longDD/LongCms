@@ -37,12 +37,8 @@
                     <if condition="$vo.email eq C('ADMIN_AUTH_KEY')">
                         --
                         <else/>
-                        [
-                        <a class='user_edit' href="{:U('Access/userEdit?id='.$vo['id'])}">编辑</a>
-                        ]
-                [
-                        <a class='user_del' href="{:U('Access/userDel?id='.$vo['id'])}">删除</a>
-                        ]
+                        [<a class='user_edit' href="{:U('Access/userEdit?id='.$vo['id'])}">编辑</a>]
+                        [<a class='user_del' href="{:U('Access/userDel?id='.$vo['id'])}">删除</a>]
                     </if>
                 </td>
             </tr>
@@ -172,12 +168,12 @@
                         title : '编辑',
                         area: ['620px', '450px'],
                         //层加载成功后进行的回调
-                        success : function(){ 
+                        // success : function(){ 
 
-                        },
-                        end : function(){
+                        // },
+                        // end : function(){
 
-                        }
+                        // }
                     });
                     return false;
                 });
