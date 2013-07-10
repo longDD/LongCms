@@ -14,7 +14,7 @@ define('APP_NAME', 'system');
 define('APP_PATH', './App/system/');
 //开启调试
 define('APP_DEBUG', TRUE);
-require('./core/ThinkPHP.php');
+require('./Core/Core.php');
 // +---------------------------------------------------------------------------------------------------
 // | End of file system.php
 // | Location: /system.php

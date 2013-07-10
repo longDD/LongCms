@@ -5,7 +5,9 @@
         <div class="current">管理员列表</div>
         <div id='inside_menu'>
             <ul>
-                <li><a id='add_user_btn' href='javascript:;'>添加管理员</a></li>
+                <li>
+                    <a id='add_user_btn' href='javascript:;'>添加管理员</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -24,17 +26,25 @@
             <tr align="center">
                 <td>{$vo.id}</td>
                 <td>{$vo.account}</td>
-                <td><if condition="$vo['status']"><font style='color:green;'>可用</font><else/><font style='color:red;'>禁用</font></if></td>
-            <td>{$vo.remark}</td>
-            <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
-            <td>
-            <if condition="$vo.email eq C('ADMIN_AUTH_KEY')">
-                --
-                <else/>
-                [ <a class='user_edit' href="{:U('Access/userEdit?id='.$vo['id'])}">编辑</a> ]
-                [ <a class='user_del' href="{:U('Access/userDel?id='.$vo['id'])}">删除</a> ]
-            </if>
-            </td>
+                <td>
+                    <if condition="$vo['status']"> <font style='color:green;'>可用</font>
+                        <else/> <font style='color:red;'>禁用</font>
+                    </if>
+                </td>
+                <td>{$vo.remark}</td>
+                <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                <td>
+                    <if condition="$vo.email eq C('ADMIN_AUTH_KEY')">
+                        --
+                        <else/>
+                        [
+                        <a class='user_edit' href="{:U('Access/userEdit?id='.$vo['id'])}">编辑</a>
+                        ]
+                [
+                        <a class='user_del' href="{:U('Access/userDel?id='.$vo['id'])}">删除</a>
+                        ]
+                    </if>
+                </td>
             </tr>
         </volist>
     </table>
@@ -45,19 +55,27 @@
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
                 <tr>
                     <th width="120">用户名：</th>
-                    <td><input type="text" name="username" class="input"/></td>
+                    <td>
+                        <input type="text" name="username" class="input"/>
+                    </td>
                 </tr>
                 <tr>
                     <th>密码：</th>
-                    <td><input class="input" name="pwd" type="password" size="40" value="" /></td>
+                    <td>
+                        <input class="input" name="pwd" type="password" size="40" value="" />
+                    </td>
                 </tr>
                 <tr>
                     <th>重复密码：</th>
-                    <td><input class="input" name="pwd_r" type="password" size="40" value="" /></td>
+                    <td>
+                        <input class="input" name="pwd_r" type="password" size="40" value="" />
+                    </td>
                 </tr>
                 <tr>
                     <th>邮箱：</th>
-                    <td><input class="input" name="email" type="text" size="40" value="" /></td>
+                    <td>
+                        <input class="input" name="email" type="text" size="40" value="" />
+                    </td>
                 </tr>
                 <tr>
                     <th>状态：</th>
@@ -66,7 +84,8 @@
                             <option value="1">启用</option>
                             <option value="0">禁用</option>
                         </select>
-                        如果禁用了将无法登陆本系统</td>
+                        如果禁用了将无法登陆本系统
+                    </td>
                 </tr>
                 <tr>
                     <th>所属用户组</th>
@@ -85,7 +104,6 @@
                     </td>
                 </tr>
             </table>
-            <input type="hidden" name="aid" value="{$info.aid}"/>
             <button class="btn submit" type='submit'>提交</button>
             <button class="btn submit xubox_close" type='button'>取消</button>
         </form>
@@ -122,9 +140,9 @@
                                     url: "__URL__/userAdd",
                                     data: 'username=' + $("input[name='username']").val() + '&password=' + $("input[name='pwd']").val() + '&email=' + $("input[name='email']").val() + '&status=' + $("select[name='status']").val() + '&remark=' + $("textarea[name='remark']").val() + '&role_id=' + $("select[name='role_id']").val(),
                                     success: function(msg) {
-                                        $('#Add_user').html($('#xuboxPageHtml').html());
-                                        layer.alert(msg, 0);
-                                        layer.close(i);
+                                        // $('#Add_user').html($('#xuboxPageHtml').html());
+                                        // layer.alert(msg, 0);
+                                        // layer.close(i);
                                         window.location.reload();
                                     }
                                 });
@@ -142,7 +160,25 @@
             //编辑用户弹窗
             $('.user_edit').each(function() {
                 $(this).on('click', function() {
-                    alert($(this).attr('href'));
+                    //iframe
+                    $.layer({
+                        type : 2,
+                        closeBtn : [0,true],
+                        shadeClose: false,
+                        shade : [0.8 , '#000' , true],
+                        iframe : {
+                            src : $(this).attr('href')
+                        },
+                        title : '编辑',
+                        area: ['620px', '450px'],
+                        //层加载成功后进行的回调
+                        success : function(){ 
+
+                        },
+                        end : function(){
+
+                        }
+                    });
                     return false;
                 });
             });

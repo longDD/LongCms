@@ -50,6 +50,23 @@ class AccessAction extends BaseAction {
         $map2['user_id'] = $id;
         $this->baseDel('role_user',$map2);
     }
+    //编辑用户
+    public function userEdit(){
+        if(IS_POST){
+
+        }else{
+        //调取用户数据
+        $this->get_one('user',(int)$_GET['id']);
+        //用户对于角色
+        $model = M('role_user');
+        $role_user = $model->where('user_id='.(int)$_GET['id'])->find();
+        //调取角色
+        $this->baseTree('role', 'id,pid,name');
+
+        $this->assign('role_user',$role_user);
+        $this->display();
+        }
+    }
 
     //后台目录管理
     public function menu() {

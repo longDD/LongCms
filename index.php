@@ -12,7 +12,7 @@ define('APP_NAME', 'home');
 define('APP_PATH', './App/home/');
 //开启调试
 define('APP_DEBUG', TRUE);
-require('./Core/ThinkPHP.php');
+require('./Core/Core.php');
 // +---------------------------------------------------------------------------------------------------
 // | End of file home.php
 // | Location: /home.php
