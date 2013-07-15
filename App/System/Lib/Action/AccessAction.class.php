@@ -94,18 +94,73 @@ class AccessAction extends BaseAction {
         $this->baseTree('menu', $fields = 'id,account');
         $this->display();
     }
+    public function menu_add(){}
+
+    public function menu_edit(){}
+
+    public function menu_del(){}
 
     //角色管理
     public function role() {
-        $this->baseList('role', $fields = 'id,account');
+        $this->baseList('role');
         $this->display();
+    }
+
+    public function role_add(){
+        if(IS_POST){
+            $_POST['create_time'] = time();
+            if(!$this->baseAdd('role',$_POST)){
+                $this->error('添加失败');
+            }else{
+                $this->success('添加成功',U('Access/role'));
+            }
+        }else{
+            //调取角色
+            $this->baseTree('role', 'id,pid,name');
+            $this->display('roleEdit');
+        }
+    }
+
+    public function role_edit(){
+        if(IS_POST){
+            $_POST['update_time'] = time();
+            $map['id'] = $_POST['id'];
+            unset($_POST['id']);
+            $model = M('role');
+            $rst = $model->where($map)->save($_POST);
+
+            if ($rst) {
+                $this->success('修改成功');
+            } else {
+                $this->error('修改失败');
+            }
+        }else{
+            $this->get_one('role',(int)$_GET['id']);
+            $this->baseTree('role', 'id,pid,name');
+            $this->display('roleEdit');
+        }
+    }
+
+    public function role_del(){
+        $map['id']  = (int)$_GET['id'];
+        $this->baseDel('role',$map);
+    }
+
+    public function role_access(){
+
     }
 
     //节点管理
     public function node() {
-        $this->baseTree('node', $fields = 'id,account');
+        $this->baseTree('node');
         $this->display();
     }
+
+    public function node_add(){}
+
+    public function node_edit(){}
+
+    public function node_del(){}
 
 }
 

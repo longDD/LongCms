@@ -68,70 +68,16 @@
 
 
                 <div id="Right">
-                    <!-- longdd 2013.7.13 角色管理-->
+                    <!-- longdd 2013.6.18 后台首页-->
 
 <div class="Item hr">
-    <div class="current">角色管理</div>
-    <div id='inside_menu'>
-            <ul>
-                <li>
-                    <a href="<?php echo U('Access/role_add');?>">添加角色</a>
-                </li>
-            </ul>
-        </div>
+    <div class="current">系统信息</div>
 </div>
 <div>
-	    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab" id="user_table">
-        <thead>
-            <tr>
-                <td>ID</td>
-                <td>名称</td>
-                <td>状态</td>
-                <td>备注</td>
-                <td>创建时间</td>
-                <td width="150">操作</td>
-            </tr>
-        </thead>
-        <?php if(is_array($list)): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr align="center">
-                <td><?php echo ($vo["id"]); ?></td>
-                <td><?php echo ($vo["name"]); ?></td>
-                <td>
-                    <?php if($vo['status']): ?><font style='color:green;'>可用</font>
-                        <?php else: ?> <font style='color:red;'>禁用</font><?php endif; ?>
-                </td>
-                <td><?php echo ($vo["remark"]); ?></td>
-                <td><?php echo (date('Y-m-d H:i:s',$vo["create_time"])); ?></td>
-                <td>
-                	 [<a  href="<?php echo U('Access/role_access?id='.$vo['id']);?>">授权管理</a>]
-                     [<a  href="<?php echo U('Access/role_edit?id='.$vo['id']);?>">编辑</a>]
-                     [<a class="del"  href="<?php echo U('Access/role_del?id='.$vo['id']);?>">删除</a>]
-                </td>
-            </tr><?php endforeach; endif; else: echo "" ;endif; ?>
-    </table>
-    <div id="page"><?php echo ($page); ?></div>
+    <ul>
+        <li><span>后台目录管理</span></li>
+    </ul>
 </div>
-<script>
-        //删除用户弹窗
-    $('.del').each(function() {
-        $(this).on('click', function() {
-            var url = $(this).attr("href");
-            $.layer({
-                shade: [0.8, '#000', true],
-                area: ['300px', '200px'],
-                dialog: {
-                    msg: '确认删除？',
-                    btns: 2,
-                    type: 4,
-                    btn: ['删除', '取消'],
-                    yes: function() {
-                        window.location = url;
-                    }
-                }
-            });
-            return false;
-        });
-    });
-</script>
                 </div>
             </div>
         </div>

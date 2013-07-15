@@ -45,6 +45,7 @@
                     <th>所属用户组</th>
                     <td>
                         <select name="role_id" style="min-width: 80px;">
+                            <option value='0'>根目录</option>
                             <foreach name='trees' item='vo'>
                                 <option value='{$vo.id}'>{$vo.prefix}{$vo.name}</option>
                             </foreach>

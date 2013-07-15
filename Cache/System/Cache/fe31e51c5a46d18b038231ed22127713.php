@@ -68,14 +68,14 @@
 
 
                 <div id="Right">
-                    <!-- longdd 2013.7.13 角色管理-->
+                    <!-- longdd 2013.7.15 节点管理-->
 
 <div class="Item hr">
-    <div class="current">角色管理</div>
+    <div class="current">节点管理</div>
     <div id='inside_menu'>
             <ul>
                 <li>
-                    <a href="<?php echo U('Access/role_add');?>">添加角色</a>
+                    <a href="<?php echo U('Access/node_add');?>">添加节点</a>
                 </li>
             </ul>
         </div>
@@ -86,25 +86,33 @@
             <tr>
                 <td>ID</td>
                 <td>名称</td>
+                <td>标题</td>
                 <td>状态</td>
                 <td>备注</td>
-                <td>创建时间</td>
+                <td>类型</td>
                 <td width="150">操作</td>
             </tr>
         </thead>
-        <?php if(is_array($list)): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr align="center">
+        <?php if(is_array($trees)): $i = 0; $__LIST__ = $trees;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr align="center">
                 <td><?php echo ($vo["id"]); ?></td>
-                <td><?php echo ($vo["name"]); ?></td>
+                <td style="text-align:left;"><?php echo ($vo["prefix"]); echo ($vo["name"]); ?></td>
+                <td><?php echo ($vo["title"]); ?></td>
                 <td>
-                    <?php if($vo['status']): ?><font style='color:green;'>可用</font>
-                        <?php else: ?> <font style='color:red;'>禁用</font><?php endif; ?>
+                    <?php if($vo['status']): ?><font style='color:green;'>启用</font>
+                    <?php else: ?> 
+                        <font style='color:red;'>禁用</font><?php endif; ?>
                 </td>
                 <td><?php echo ($vo["remark"]); ?></td>
-                <td><?php echo (date('Y-m-d H:i:s',$vo["create_time"])); ?></td>
                 <td>
-                	 [<a  href="<?php echo U('Access/role_access?id='.$vo['id']);?>">授权管理</a>]
-                     [<a  href="<?php echo U('Access/role_edit?id='.$vo['id']);?>">编辑</a>]
-                     [<a class="del"  href="<?php echo U('Access/role_del?id='.$vo['id']);?>">删除</a>]
+                	<?php if($vo['level'] == 1): ?><font style='color:red;'>应用</font>
+                	<?php elseif($vo['level'] == 2): ?>
+                		<font style='color:green;'>模块</font>
+                      <?php else: ?> 
+                       <font style='color:blue;'>操作</font><?php endif; ?>
+                </td>
+                <td>
+                     [<a  href="<?php echo U('Access/node_edit?id='.$vo['id']);?>">编辑</a>]
+                     [<a class="del"  href="<?php echo U('Access/node_del?id='.$vo['id']);?>">删除</a>]
                 </td>
             </tr><?php endforeach; endif; else: echo "" ;endif; ?>
     </table>

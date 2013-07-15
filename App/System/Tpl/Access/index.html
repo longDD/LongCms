@@ -1,4 +1,4 @@
-<!-- longdd 2013.6.18 后台用户管理-->
+<!-- longdd 2013.7.12 后台角色管理-->
 <layout name="Common/layout"/>
 <div>
     <div class="Item hr">
@@ -27,7 +27,7 @@
                 <td>{$vo.id}</td>
                 <td>{$vo.account}</td>
                 <td>
-                    <if condition="$vo['status']"> <font style='color:green;'>可用</font>
+                    <if condition="$vo['status']"> <font style='color:green;'>启用</font>
                         <else/> <font style='color:red;'>禁用</font>
                     </if>
                 </td>
@@ -87,6 +87,7 @@
                     <th>所属用户组</th>
                     <td>
                         <select name="role_id" style="min-width: 80px;">
+                            <option value='0'>根目录</option>
                             <foreach name='trees' item='vo'>
                                 <option value='{$vo.id}'>{$vo.prefix}{$vo.name}</option>
                             </foreach>

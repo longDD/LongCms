@@ -1,10 +1,78 @@
-<!-- longdd 2013.6.18 后台首页-->
+<!-- longdd 2013.7.15 节点管理-->
 <layout name="Common/layout"/>
 <div class="Item hr">
-    <div class="current">系统信息</div>
+    <div class="current">节点管理</div>
+    <div id='inside_menu'>
+            <ul>
+                <li>
+                    <a href="{:U('Access/node_add')}">添加节点</a>
+                </li>
+            </ul>
+        </div>
 </div>
 <div>
-    <ul>
-        <li><span>节点管理</span></li>
-    </ul>
+	    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab" id="user_table">
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>名称</td>
+                <td>标题</td>
+                <td>状态</td>
+                <td>备注</td>
+                <td>类型</td>
+                <td width="150">操作</td>
+            </tr>
+        </thead>
+        <volist name="trees" id="vo">
+            <tr align="center">
+                <td>{$vo.id}</td>
+                <td style="text-align:left;">{$vo.prefix}{$vo.name}</td>
+                <td>{$vo.title}</td>
+                <td>
+                    <if condition="$vo['status']"> 
+                    	<font style='color:green;'>启用</font>
+                    <else/> 
+                        <font style='color:red;'>禁用</font>
+                    </if>
+                </td>
+                <td>{$vo.remark}</td>
+                <td>
+                	<if condition="$vo['level'] eq 1">
+                		<font style='color:red;'>应用</font>
+                	<elseif condition="$vo['level'] eq 2"/>
+                		<font style='color:green;'>模块</font>
+                      <else/> 
+                       <font style='color:blue;'>操作</font>
+                    </if>
+                </td>
+                <td>
+                     [<a  href="{:U('Access/node_edit?id='.$vo['id'])}">编辑</a>]
+                     [<a class="del"  href="{:U('Access/node_del?id='.$vo['id'])}">删除</a>]
+                </td>
+            </tr>
+        </volist>
+    </table>
+    <div id="page">{$page}</div>
 </div>
+<script>
+        //删除用户弹窗
+    $('.del').each(function() {
+        $(this).on('click', function() {
+            var url = $(this).attr("href");
+            $.layer({
+                shade: [0.8, '#000', true],
+                area: ['300px', '200px'],
+                dialog: {
+                    msg: '确认删除？',
+                    btns: 2,
+                    type: 4,
+                    btn: ['删除', '取消'],
+                    yes: function() {
+                        window.location = url;
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>

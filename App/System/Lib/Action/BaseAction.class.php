@@ -128,7 +128,7 @@ class BaseAction extends Action {
 //通用删除
     public function baseDel($model,$map,$isAlert = 1){
         $model = M($model);
-        $rst = $model->where($map)->delete();
+        $rst = $model->where($map)->limit(1)->delete();
         if($isAlert == 1){
             if($rst){
                 $this->success('删除成功');
