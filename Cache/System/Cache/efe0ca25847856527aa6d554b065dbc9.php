@@ -96,7 +96,7 @@
                 <td><?php echo ($vo["id"]); ?></td>
                 <td><?php echo ($vo["account"]); ?></td>
                 <td>
-                    <?php if($vo['status']): ?><font style='color:green;'>可用</font>
+                    <?php if($vo['status']): ?><font style='color:green;'>启用</font>
                         <?php else: ?> <font style='color:red;'>禁用</font><?php endif; ?>
                 </td>
                 <td><?php echo ($vo["remark"]); ?></td>

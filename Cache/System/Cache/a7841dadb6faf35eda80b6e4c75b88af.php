@@ -68,70 +68,79 @@
 
 
                 <div id="Right">
-                    <!-- longdd 2013.7.13 角色管理-->
+                    <!-- longdd 2013.7.16 后台节点添加编辑-->
 
-<div class="Item hr">
-    <div class="current">角色管理</div>
-    <div id='inside_menu'>
-            <ul>
-                <li>
-                    <a href="<?php echo U('Access/role_add');?>">添加角色</a>
-                </li>
-            </ul>
-        </div>
-</div>
 <div>
-	    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab" id="user_table">
-        <thead>
-            <tr>
-                <td>ID</td>
-                <td>名称</td>
-                <td>状态</td>
-                <td>备注</td>
-                <td>创建时间</td>
-                <td width="150">操作</td>
-            </tr>
-        </thead>
-        <?php if(is_array($list)): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr align="center">
-                <td><?php echo ($vo["id"]); ?></td>
-                <td><?php echo ($vo["name"]); ?></td>
-                <td>
-                    <?php if($vo['status']): ?><font style='color:green;'>启用</font>
-                        <?php else: ?> <font style='color:red;'>禁用</font><?php endif; ?>
-                </td>
-                <td><?php echo ($vo["remark"]); ?></td>
-                <td><?php echo (date('Y-m-d H:i:s',$vo["create_time"])); ?></td>
-                <td>
-                	 [<a  href="<?php echo U('Access/role_access?id='.$vo['id']);?>">授权管理</a>]
-                     [<a  href="<?php echo U('Access/role_edit?id='.$vo['id']);?>">编辑</a>]
-                     [<a class="del"  href="<?php echo U('Access/role_del?id='.$vo['id']);?>">删除</a>]
-                </td>
-            </tr><?php endforeach; endif; else: echo "" ;endif; ?>
-    </table>
-    <div id="page"><?php echo ($page); ?></div>
+    <div class="Item hr">
+        <div class="current">
+            <?php if(ACTION_NAME == 'node_edit'): ?>编辑节点
+                <?php else: ?>
+                添加节点<?php endif; ?>
+        </div>
+    </div>
+    <!-- Add -->
+    <div id='Add_user'>
+        <form action="<?php if(ACTION_NAME == 'node_edit'): echo U('Access/node_edit'); else: echo U('Access/node_add'); endif; ?>" method="post">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                <tr>
+                    <th width="120">名称(Example:Add)：</th>
+                    <td>
+                        <input type="text" name="name" class="input" value="<?php echo ($info["name"]); ?>"/>
+                        <?php if(ACTION_NAME == 'node_edit'): ?><input type="hidden" name="id" class="input" value="<?php echo ($info["id"]); ?>"/><?php endif; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="120">标题(Example:添加)：</th>
+                    <td>
+                        <input type="text" name="title" class="input" value="<?php echo ($info["title"]); ?>"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>状态：</th>
+                    <td>
+                        <select name="status" style="width: 80px;">
+                            <option value="1">启用</option>
+                            <option value="0">禁用</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>类型:</th>
+                    <td>
+                        <select name="level" style="width: 80px;">
+                            <option value="3">操作</option>
+                            <option value="2">模块</option>
+                            <option value="1">应用</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>父节点:</th>
+                    <td>
+                        <select name="pid" style="min-width: 80px;">
+                            <option value='0'>根目录</option>
+                            <?php if(is_array($trees)): foreach($trees as $key=>$vo): ?><option value='<?php echo ($vo["id"]); ?>'><?php echo ($vo["prefix"]); echo ($vo["name"]); ?></option><?php endforeach; endif; ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>备注：</th>
+                    <td>
+                        <textarea name="remark" rows="5" cols="57"><?php echo ($info["remark"]); ?></textarea>
+                    </td>
+                </tr>
+            </table>
+            <button class="btn submit" type='submit'>提交</button>
+            <button class="btn submit xubox_close" type='reset'>取消</button>
+        </form>
+    </div>
 </div>
-<script>
-        //删除用户弹窗
-    $('.del').each(function() {
-        $(this).on('click', function() {
-            var url = $(this).attr("href");
-            $.layer({
-                shade: [0.8, '#000', true],
-                area: ['300px', '200px'],
-                dialog: {
-                    msg: '确认删除？',
-                    btns: 2,
-                    type: 4,
-                    btn: ['删除', '取消'],
-                    yes: function() {
-                        window.location = url;
-                    }
-                }
-            });
-            return false;
-        });
-    });
-</script>
+<?php if(ACTION_NAME == 'node_edit'): ?><script>
+        $(function(){
+            $("select[name='pid']").val('<?php echo ($info["pid"]); ?>');
+            $("select[name='status']").val('<?php echo ($info["status"]); ?>');
+        })
+    </script><?php endif; ?>
                 </div>
             </div>
         </div>

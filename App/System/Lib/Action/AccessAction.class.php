@@ -156,11 +156,32 @@ class AccessAction extends BaseAction {
         $this->display();
     }
 
-    public function node_add(){}
+    public function node_add(){
+        if(IS_POST){
+            if(!$this->baseAdd('node',$_POST)){
+                $this->error('添加失败');
+            }else{
+                $this->success('添加成功',U('Access/node'));
+            }
+        }else{
+            //调取节点
+            $this->baseTree('node', 'id,pid,name');
+            $this->display('nodeEdit');
+        }
+    }
 
-    public function node_edit(){}
+    public function node_edit(){
+        if(IS_POST){
 
-    public function node_del(){}
+        }else{
+            $this->display();
+        }
+    }
+
+    public function node_del(){
+        $map['id']  = (int)$_GET['id'];
+        $this->baseDel('node',$map);
+    }
 
 }
 
