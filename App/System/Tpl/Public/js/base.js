@@ -10,7 +10,7 @@ var autoSize = function() {
     $('#control').css('height', h + 'px');
     $('#Left').css('height', (h + 12) + 'px');
     var btns = $(".commonBtnArea").length;
-    var rh = btns > 0 ? h - 50 : h;
+    var rh = btns > 0 ? h - 50 : h - 150;
     $('#Right').css({
         height: rh + 'px',
         width: (webBodyWidth - 230) + 'px'

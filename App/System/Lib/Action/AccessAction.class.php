@@ -147,6 +147,11 @@ class AccessAction extends BaseAction {
     }
 
     public function role_access(){
+        if(IS_POST){
+
+        }else{
+            //获取节点列表
+        }
 
     }
 
@@ -172,9 +177,21 @@ class AccessAction extends BaseAction {
 
     public function node_edit(){
         if(IS_POST){
+            $map['id'] = $_POST['id'];
+            unset($_POST['id']);
+            $model = M('node');
+            $rst = $model->where($map)->save($_POST);
 
+            if ($rst) {
+                $this->success('修改成功');
+            } else {
+                $this->error('修改失败');
+            }
         }else{
-            $this->display();
+            //删除自身 ###
+            $this->get_one('node',(int)$_GET['id']);
+            $this->baseTree('node', 'id,pid,name');
+            $this->display('nodeEdit');
         }
     }
 

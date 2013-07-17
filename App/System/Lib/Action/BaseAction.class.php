@@ -99,7 +99,7 @@ class BaseAction extends Action {
 //通用树
     public function baseTree($model, $fields = '*') {
         $model = M($model);
-        $list = $model->field($fields)->where('status=1')->select();
+        $list = $model->field($fields)->select();
         import('ORG.Util.Tree');
         $Tree = new Tree($list);
         $trees = $Tree->get_tree();
