@@ -50,6 +50,7 @@
                     <th>所属用户组</th>
                     <td>
                         <select name="role_id" style="min-width: 80px;">
+                            <option value='0'>根目录</option>
                             <?php if(is_array($trees)): foreach($trees as $key=>$vo): ?><option value='<?php echo ($vo["id"]); ?>'><?php echo ($vo["prefix"]); echo ($vo["name"]); ?></option><?php endforeach; endif; ?>
                         </select>
                     </td>

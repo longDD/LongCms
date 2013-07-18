@@ -148,9 +148,50 @@ class AccessAction extends BaseAction {
 
     public function role_access(){
         if(IS_POST){
+            P($_POST);
+            if(count($_POST['data']>0)){
+                //获取角色节点
+                $access = M('access');
+                $map['role_id'] = $_POST['id'];
+                $list = $access->where($map)->select();
+                $list = is_null($list)?array():$list;
+                P($list);
+                $node_add = array();
+                $node_del = array();
+                //循环节点
+                foreach ($_POST['data'] as $v) {
+                    foreach ($list as $v2) {
+                        //判断需要删除的节点
+                        ////判断需要添加的节点
+                        if(){
 
+                        }elseif(){
+
+                        }
+                    }
+                }
+            }
+            
         }else{
             //获取节点列表
+            $model = M('node');
+            import('ORG.Util.Tree');
+            $list = $model->select();
+            $tree = new Tree($list);
+            $rst = $tree->get_list();
+
+            //获取当前用户组权限 
+            $access = M('access');
+            $map['role_id'] = $_GET['id'];
+            $access_list = $access->where($map)->select();
+            if(is_null($access_list)){
+                $access_list = array();
+            }
+
+            $this->assign('id',$_GET['id']);
+            $this->assign('access_list',json_encode($access_list));
+            $this->assign('list',$rst);
+            $this->display('roleAccess');
         }
 
     }
