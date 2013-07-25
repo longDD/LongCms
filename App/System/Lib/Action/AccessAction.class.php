@@ -91,14 +91,29 @@ class AccessAction extends BaseAction {
 
     //后台目录管理
     public function menu() {
-        $this->baseTree('menu', $fields = 'id,account');
+        $this->baseTree('menu');
         $this->display();
     }
-    public function menu_add(){}
+    public function menu_add(){
+        if(IS_POST){
 
-    public function menu_edit(){}
+        }else{
+            $this->display('menuEdit');
+        }
+    }
 
-    public function menu_del(){}
+    public function menu_edit(){
+        if(IS_POST){
+
+        }else{
+            $this->display('menuEdit');
+        }
+    }
+
+    public function menu_del(){
+        $map['id']  = (int)$_GET['id'];
+        $this->baseDel('menu',$map);
+    }
 
     //角色管理
     public function role() {
@@ -148,30 +163,47 @@ class AccessAction extends BaseAction {
 
     public function role_access(){
         if(IS_POST){
-            P($_POST);
+            $access = M('access');
             if(count($_POST['data']>0)){
                 //获取角色节点
-                $access = M('access');
                 $map['role_id'] = $_POST['id'];
-                $list = $access->where($map)->select();
-                $list = is_null($list)?array():$list;
-                P($list);
-                $node_add = array();
-                $node_del = array();
-                //循环节点
-                foreach ($_POST['data'] as $v) {
-                    foreach ($list as $v2) {
-                        //判断需要删除的节点
-                        ////判断需要添加的节点
-                        if(){
-
-                        }elseif(){
-
-                        }
+                $access_list = $access->where($map)->field('node_id')->select();
+                if(is_null($access_list)){
+                    $list  = array();
+                }else{
+                    $list = array();
+                    foreach ($access_list as $v) {
+                        $list[] = $v['node_id'];
                     }
                 }
+                $rst = true;
+                //判断需要删除的节点
+                $node_del = array_diff($list,$_POST['data']);
+                foreach ($node_del as $v) {
+                    $map['node_id'] = $v;
+                    if(!$access->where($map)->delete()){
+                        $rst = fasle;
+                    }
+                }
+                //判断需要添加的节点
+                $node_add = array_diff($_POST['data'],$list);
+                $data['role_id'] = $_POST['id'];
+                foreach ($node_add as $v) {
+                    $data['node_id'] = $v;
+                    if(!$access->add($data)){
+                        $rst = fasle;
+                    }
+                }
+            }else{
+                $map['role_id'] = $_POST['id'];
+                $rst = $access->where($map)->delete();
             }
-            
+            //提示
+            if($rst){
+                    $this->success('授权成功');
+                }else{
+                    $this->error('授权失败');
+                }
         }else{
             //获取节点列表
             $model = M('node');
@@ -193,7 +225,6 @@ class AccessAction extends BaseAction {
             $this->assign('list',$rst);
             $this->display('roleAccess');
         }
-
     }
 
     //节点管理
