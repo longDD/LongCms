@@ -1,0 +1,83 @@
+<!-- longdd 2013.7.29 后台菜单-->
+<layout name="Common/layout"/>
+<div>
+    <div class="Item hr">
+        <div class="current">
+            <if condition="ACTION_NAME eq 'menu_edit'">
+                编辑栏目
+                <else/>
+                添加栏目
+            </if>
+        </div>
+    </div>
+    <!-- Add -->
+    <div id='Add_user'>
+        <form action="<if condition="ACTION_NAME eq 'menu_edit'">{:U('Access/menu_edit')}<else/>{:U('Access/menu_add')}</if>" method="post">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                <tr>
+                    <th width="120">名称：</th>
+                    <td>
+                        <input type="text" name="name" class="input" value="{$info.name}"/>
+                        <if condition="ACTION_NAME eq 'menu_edit'">
+                        <input type="hidden" name="id" class="input" value="{$info.id}"/>
+                        </if>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="120">模型：</th>
+                    <td>
+                        <input type="text" name="model" class="input" value="{$info.model}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="120">操作：</th>
+                    <td>
+                        <input type="text" name="action" class="input" value="{$info.action}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="120">数据：</th>
+                    <td>
+                        <input type="text" name="data" class="input" value="{$info.data}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>状态：</th>
+                    <td>
+                        <select name="status" style="width: 80px;">
+                            <option value="1">启用</option>
+                            <option value="0">禁用</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>分类</th>
+                    <td>
+                        <select name="pid" style="min-width: 80px;">
+                            <option value='0'>根目录</option>
+                            <foreach name='trees' item='vo'>
+                                <option value='{$vo.id}'>{$vo.prefix}{$vo.name}</option>
+                            </foreach>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>备注：</th>
+                    <td>
+                        <textarea name="remark" rows="5" cols="57">{$info.remark}</textarea>
+                    </td>
+                </tr>
+            </table>
+            <button class="btn submit" type='submit'>提交</button>
+            <button class="btn submit xubox_close" type='reset'>取消</button>
+        </form>
+    </div>
+</div>
+<if condition="ACTION_NAME eq 'menu_edit'">
+    <script>
+        $(function(){
+            $("select[name='pid']").val('{$info.pid}');
+            $("select[name='status']").val('{$info.status}');
+        })
+    </script>
+</if>

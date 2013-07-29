@@ -96,16 +96,33 @@ class AccessAction extends BaseAction {
     }
     public function menu_add(){
         if(IS_POST){
-
+            if(!$this->baseAdd('menu',$_POST)){
+                $this->error('添加失败');
+            }else{
+                $this->success('添加成功',U('Access/menu'));
+            }
         }else{
+            //目录树
+            $this->baseTree('menu', 'id,pid,name');
             $this->display('menuEdit');
         }
     }
 
     public function menu_edit(){
         if(IS_POST){
+            $map['id'] = $_POST['id'];
+            unset($_POST['id']);
+            $model = M('menu');
+            $rst = $model->where($map)->save($_POST);
 
+            if ($rst) {
+                $this->success('修改成功');
+            } else {
+                $this->error('修改失败');
+            }
         }else{
+            $this->baseTree('menu', 'id,pid,name');
+            $this->get_one('menu',(int)$_GET['id']);
             $this->display('menuEdit');
         }
     }

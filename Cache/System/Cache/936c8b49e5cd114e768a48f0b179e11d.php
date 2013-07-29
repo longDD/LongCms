@@ -96,7 +96,7 @@
         </thead>
         <?php if(is_array($trees)): $i = 0; $__LIST__ = $trees;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr align="center">
                 <td><?php echo ($vo["id"]); ?></td>
-                <td><?php echo ($vo["name"]); ?></td>
+                <td><?php echo ($vo["prefix"]); echo ($vo["name"]); ?></td>
                 <td><?php echo ($vo["model"]); ?></td>
                 <td><?php echo ($vo["action"]); ?></td>
                 <td><?php echo ($vo["data"]); ?></td>
